@@ -1,5 +1,5 @@
 provider "google" {
-  version = "~> 1.0"                                                                                                         
+  version = "~> 1.0"
 }
 
 data "google_compute_network" "main" {
@@ -7,7 +7,7 @@ data "google_compute_network" "main" {
 }
 
 data "google_compute_subnetwork" "db" {
-  name   = "db"
+  name = "db"
 }
 
 resource "google_compute_instance" "db" {
@@ -30,8 +30,7 @@ resource "google_compute_instance" "db" {
   }
 
   // Local SSD disk
-  scratch_disk {
-  }
+  scratch_disk {}
 
   network_interface {
     subnetwork = "${data.google_compute_subnetwork.db.self_link}"
@@ -42,9 +41,9 @@ resource "google_compute_instance" "db" {
   }
 
   metadata {
-    sshKeys = "ubuntu:${file(var.ssh_public_key_filepath)}",
-    block-project-ssh-keys = "TRUE",
-    startup-script = "${file("${path.module}/templates/install.sh")}"
+    sshKeys                = "ubuntu:${file(var.ssh_public_key_filepath)}"
+    block-project-ssh-keys = "TRUE"
+    startup-script         = "${file("${path.module}/files/install.sh")}"
   }
 }
 
