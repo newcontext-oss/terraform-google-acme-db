@@ -47,3 +47,5 @@ export GOOGLE_APPLICATION_CREDENTIALS="credentials.json"
 export GCLOUD_PROJECT="<project-id>
 export GCLOUD_REGION="us-west1"
 ```
+
+- Source the environment file: `source .env`
