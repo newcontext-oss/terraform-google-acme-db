@@ -4,5 +4,5 @@ module "db" {
   network_name = "test-org"
 
   engineer_cidrs = "${var.engineer_cidrs}"
-  ssh_public_key_filepath = "test/fixtures/tf_module/keys/insecure.pub"
+  ssh_public_key_filepath = "${path.module}/files/insecure.pub"
 }
