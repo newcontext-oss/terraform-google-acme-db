@@ -9,11 +9,14 @@ provider "google" {
   version     = "~> 1.0"
 }
 
+
+module "network" {
+  organization_name = "test-org"
+  source            = "git::ssh://git@github.com/newcontext/tf_module_gcloud_network.git?ref=ncs-alane-make-or-break"
+}
+
 module "db" {
-  source = "../../.."
-
-  network_name = "test-org"
-
-  engineer_cidrs = "${var.engineer_cidrs}"
+  engineer_cidrs          = "${var.engineer_cidrs}"
+  source                  = "../../.."
   ssh_public_key_filepath = "${path.module}/files/insecure.pub"
 }
