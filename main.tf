@@ -3,7 +3,7 @@ data "google_compute_subnetwork" "db" {
 }
 
 resource "random_pet" "name" {
-  prefix = "${data.google_compute_subnetwork.db.network}"
+  length = "1"
 }
 
 resource "google_compute_instance" "db" {
