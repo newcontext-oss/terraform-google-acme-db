@@ -2,8 +2,12 @@ data "google_compute_subnetwork" "db" {
   name = "${var.subnetwork_name}"
 }
 
+resource "random_pet" "name" {
+  prefix = "${data.google_compute_subnetwork.db.network}"
+}
+
 resource "google_compute_instance" "db" {
-  name         = "db"
+  name         = "${random_pet.name.id}-db"
   machine_type = "n1-standard-1"
   zone         = "us-west1-a"
 
@@ -40,7 +44,7 @@ resource "google_compute_instance" "db" {
 }
 
 resource "google_compute_firewall" "db_tcp22_ingress" {
-  name    = "db-tcp22-ingress"
+  name    = "${random_pet.name.id}-db-tcp22-ingress"
   network = "${data.google_compute_subnetwork.db.network}"
 
   direction = "INGRESS"
@@ -58,7 +62,7 @@ resource "google_compute_firewall" "db_tcp22_ingress" {
 }
 
 resource "google_compute_firewall" "db_tcp8080_ingress" {
-  name    = "db-tcp8080-ingress"
+  name    = "${random_pet.name.id}-db-tcp8080-ingress"
   network = "${data.google_compute_subnetwork.db.network}"
 
   direction = "INGRESS"
