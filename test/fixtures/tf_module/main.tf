@@ -19,4 +19,5 @@ module "db" {
   engineer_cidrs          = "${var.engineer_cidrs}"
   source                  = "../../.."
   ssh_public_key_filepath = "${path.module}/files/insecure.pub"
+  subnetwork_name         = "${module.network.database_subnetwork_name}"
 }

@@ -1,9 +1,5 @@
-data "google_compute_network" "main" {
-  name = "${var.network_name}"
-}
-
 data "google_compute_subnetwork" "db" {
-  name = "db"
+  name = "${var.subnetwork_name}"
 }
 
 resource "google_compute_instance" "db" {
@@ -45,7 +41,7 @@ resource "google_compute_instance" "db" {
 
 resource "google_compute_firewall" "db_tcp22_ingress" {
   name    = "db-tcp22-ingress"
-  network = "${data.google_compute_network.main.name}"
+  network = "${data.google_compute_subnetwork.db.network}"
 
   direction = "INGRESS"
 
@@ -63,7 +59,7 @@ resource "google_compute_firewall" "db_tcp22_ingress" {
 
 resource "google_compute_firewall" "db_tcp8080_ingress" {
   name    = "db-tcp8080-ingress"
-  network = "${data.google_compute_network.main.name}"
+  network = "${data.google_compute_subnetwork.db.network}"
 
   direction = "INGRESS"
 
