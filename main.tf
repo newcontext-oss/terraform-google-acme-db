@@ -1,7 +1,3 @@
-provider "google" {
-  version = "~> 1.0"
-}
-
 data "google_compute_network" "main" {
   name = "${var.network_name}"
 }

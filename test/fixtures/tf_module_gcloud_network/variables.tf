@@ -1,8 +1,3 @@
-variable "engineer_cidrs" {
-  description = "CIDR blocks to allow into the servers"
-  type        = "list"
-}
-
 variable "gcloud_project" {
   description = "The Google Cloud project in which to create resource."
   type        = "string"
