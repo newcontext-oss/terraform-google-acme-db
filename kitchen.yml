@@ -17,9 +17,6 @@ verifier:
   name: terraform
   groups:
     - name: db
-      controls:
-        - instance
-        - firewall
 
 platforms:
   - name: terraform
