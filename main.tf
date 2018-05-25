@@ -4,10 +4,11 @@ data "google_compute_subnetwork" "db" {
 
 resource "random_pet" "name" {
   length = "1"
+  prefix = "db"
 }
 
 resource "google_compute_instance" "db" {
-  name         = "${random_pet.name.id}-db"
+  name         = "${random_pet.name.id}"
   machine_type = "n1-standard-1"
   zone         = "us-west1-a"
 
