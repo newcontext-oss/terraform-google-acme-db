@@ -1,17 +1,14 @@
-provider "google" {
-  version = "~> 1.0"                                                                                                         
-}
-
-data "google_compute_network" "main" {
-  name = "${var.network_name}"
-}
-
 data "google_compute_subnetwork" "db" {
-  name   = "db"
+  name = "${var.subnetwork_name}"
+}
+
+resource "random_pet" "name" {
+  length = "1"
+  prefix = "db"
 }
 
 resource "google_compute_instance" "db" {
-  name         = "db"
+  name         = "${random_pet.name.id}"
   machine_type = "n1-standard-1"
   zone         = "us-west1-a"
 
@@ -30,8 +27,7 @@ resource "google_compute_instance" "db" {
   }
 
   // Local SSD disk
-  scratch_disk {
-  }
+  scratch_disk {}
 
   network_interface {
     subnetwork = "${data.google_compute_subnetwork.db.self_link}"
@@ -42,15 +38,15 @@ resource "google_compute_instance" "db" {
   }
 
   metadata {
-    sshKeys = "ubuntu:${file(var.ssh_public_key_filepath)}",
-    block-project-ssh-keys = "TRUE",
-    startup-script = "${file("${path.module}/templates/install.sh")}"
+    sshKeys                = "ubuntu:${file(var.ssh_public_key_filepath)}"
+    block-project-ssh-keys = "TRUE"
+    startup-script         = "${file("${path.module}/files/install.sh")}"
   }
 }
 
-resource "google_compute_firewall" "db_tcp22_ingress" {
-  name    = "db-tcp22-ingress"
-  network = "${data.google_compute_network.main.name}"
+resource "google_compute_firewall" "allow_ssh_ingress" {
+  name    = "${random_pet.name.id}-allow-ssh-ingress"
+  network = "${data.google_compute_subnetwork.db.network}"
 
   direction = "INGRESS"
 
@@ -66,9 +62,9 @@ resource "google_compute_firewall" "db_tcp22_ingress" {
   target_tags = ["db"]
 }
 
-resource "google_compute_firewall" "db_tcp8080_ingress" {
-  name    = "db-tcp8080-ingress"
-  network = "${data.google_compute_network.main.name}"
+resource "google_compute_firewall" "allow_ui_ingress" {
+  name    = "${random_pet.name.id}-allow-ui-ingress"
+  network = "${data.google_compute_subnetwork.db.network}"
 
   direction = "INGRESS"
 
