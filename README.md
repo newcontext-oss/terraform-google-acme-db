@@ -1,4 +1,4 @@
-# tf_module_glcoud_db
+# terraform-google-acme-db
 
 Terraform module for building out database server on Google Cloud Services
 
@@ -10,7 +10,7 @@ Call it as a module from another Terraform repository.
 
 ```sh
 module "db" {
-  source = "tf_module_gcloud_db"
+  source = "terraform-google-acme-db"
 
   network_name   = "test-org"
   engineer_cidrs = "${var.engineer_cidrs}"
